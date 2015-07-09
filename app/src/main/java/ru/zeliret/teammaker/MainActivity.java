@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
     private FragmentManager fm;
@@ -29,6 +30,26 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         super.onStart();
 
         fm.addOnBackStackChangedListener(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (processFragmentStack())
+                    return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private boolean processFragmentStack() {
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack();
+            return true;
+        }
+
+        return false;
     }
 
     @Override
