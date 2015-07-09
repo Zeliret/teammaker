@@ -3,4 +3,7 @@
 
     <string name="title_contacts_selected">Выбрано: %d</string>
     <string name="contacts_make_teams">Раскидать по командам</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

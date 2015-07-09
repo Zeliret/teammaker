@@ -11,6 +11,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +23,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -91,7 +94,29 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public boolean onActionItemClicked(final ActionMode mode, final MenuItem item) {
+        actionMode.finish();
+        switch (item.getItemId()) {
+            case R.id.menu_contacts_done:
+                completeChoice();
+                return true;
+        }
+
         return false;
+    }
+
+    private void completeChoice() {
+        ArrayList<Player> players = new ArrayList<>();
+
+        SparseBooleanArray checkedItemPositions = contactsList.getCheckedItemPositions();
+        int itemsSize = checkedItemPositions.size();
+        for (int i = 0; i < itemsSize; i++) {
+            if (checkedItemPositions.get(i)) {
+                players.add(Player.fromCursor((Cursor) contactsList.getItemAtPosition(i)));
+            }
+        }
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.navigate(TeamsFragment.newInstance(players));
     }
 
     @Override
@@ -138,14 +163,14 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
 
         @Override
         public void bindView(final View view, final Context context, final Cursor cursor) {
-            ContactsViewHolder holder = (ContactsViewHolder) view.getTag();
-            String name = cursor.getString(cursor.getColumnIndex(Contacts.DISPLAY_NAME_PRIMARY));
-            holder.nameView.setText(name);
-
-            String photoUri = cursor.getString(cursor.getColumnIndex(Contacts.PHOTO_THUMBNAIL_URI));
-            Glide.with(getActivity())
-                    .load(photoUri)
-                    .into(holder.photoView);
+            Player player = Player.fromCursor(cursor);
+            if (null != player) {
+                ContactsViewHolder holder = (ContactsViewHolder) view.getTag();
+                holder.nameView.setText(player.name);
+                Glide.with(getActivity())
+                        .load(player.photoUri)
+                        .into(holder.photoView);
+            }
         }
 
         @Override
