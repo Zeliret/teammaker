@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Team maker</string>
+
+    <string name="title_contacts_selected">Выбрано: %d</string>
+    <string name="contacts_make_teams">Раскидать по командам</string>
+</resources>
