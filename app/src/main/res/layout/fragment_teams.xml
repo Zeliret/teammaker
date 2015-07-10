@@ -46,7 +46,6 @@
         android:id="@+id/teams"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
         android:background="@drawable/teams_bg"
         android:clipToPadding="false"
         android:divider="@android:color/transparent"
