@@ -34,4 +34,8 @@ public abstract class BaseFragment extends Fragment {
     protected void finish(){
         getHostActivity().goBack();
     }
+
+    protected ActionBar getActionBar(){
+        return getHostActivity().getSupportActionBar();
+    }
 }

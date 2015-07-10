@@ -13,5 +13,6 @@
     <string name="cancel">Отмена</string>
     <string name="team_1">Команда 1</string>
     <string name="team_2">Команда 2</string>
-    <string name="search_title">Поиск</string>
+    <string name="contacts_search">Поиск</string>
+    <string name="error_not_enough_players">Нужно выбрать больше 2 человек!</string>
 </resources>

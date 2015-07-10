@@ -66,8 +66,10 @@ public class TeamsFragment extends BaseFragment {
 
     @Override
     protected void setupActionBar(final ActionBar actionBar) {
-        if (null != actionBar)
+        if (null != actionBar) {
             actionBar.setTitle(R.string.title_teams);
+            actionBar.setSubtitle(null);
+        }
     }
 
     @Override
