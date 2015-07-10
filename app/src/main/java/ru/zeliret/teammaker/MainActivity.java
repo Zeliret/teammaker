@@ -68,8 +68,9 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
             Fragment currentFragment = fm.findFragmentById(R.id.content);
             if (null == currentFragment || !currentFragment.getClass().equals(fragment.getClass())) {
                 FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.content, fragment);
+                transaction.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom);
                 transaction.addToBackStack(null);
+                transaction.replace(R.id.content, fragment);
                 transaction.commit();
             }
         }

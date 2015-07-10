@@ -11,6 +11,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -55,8 +57,16 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setupActionBar();
 
         getLoaderManager().initLoader(0, null, this);
+    }
+
+    private void setupActionBar() {
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        ActionBar actionBar = activity.getSupportActionBar();
+        if (null != actionBar)
+            actionBar.setTitle(R.string.title_contacts);
     }
 
     @Override
