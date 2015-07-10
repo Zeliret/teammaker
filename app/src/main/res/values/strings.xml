@@ -13,4 +13,5 @@
     <string name="cancel">Отмена</string>
     <string name="team_1">Команда 1</string>
     <string name="team_2">Команда 2</string>
+    <string name="search_title">Поиск</string>
 </resources>
