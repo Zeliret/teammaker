@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -114,6 +115,8 @@ public class TeamsFragment extends BaseFragment {
         public TeamsAdapter(final Context context, final ArrayList<Player> items) {
             super(context, 0, items);
             inflater = LayoutInflater.from(context);
+
+            Collections.shuffle(items);
         }
 
         @Override
