@@ -46,6 +46,8 @@ public class TeamsFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
         players = getArguments().getParcelableArrayList(KEY_PLAYERS);
+        if (null == savedInstanceState)
+            Collections.shuffle(players);
     }
 
     @Override
@@ -60,11 +62,6 @@ public class TeamsFragment extends BaseFragment {
 
         teamsList = (ListView) view.findViewById(R.id.teams);
         teamsList.setAdapter(new TeamsAdapter(view.getContext(), players));
-    }
-
-    @Override
-    public void onActivityCreated(final Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -115,8 +112,6 @@ public class TeamsFragment extends BaseFragment {
         public TeamsAdapter(final Context context, final ArrayList<Player> items) {
             super(context, 0, items);
             inflater = LayoutInflater.from(context);
-
-            Collections.shuffle(items);
         }
 
         @Override

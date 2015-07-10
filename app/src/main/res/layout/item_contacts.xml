@@ -12,7 +12,7 @@
         android:layout_width="@dimen/contact_photo_size"
         android:layout_height="@dimen/contact_photo_size"
         android:background="@drawable/contact_photo_placeholder"
-        app:border_color="@color/primary"
+        app:border_color="@color/contact_selector"
         app:border_width="2dp"/>
 
     <TextView
@@ -23,5 +23,5 @@
         android:fontFamily="sans-serif"
         android:paddingLeft="@dimen/content_padding"
         android:textAppearance="?android:textAppearance"
-        android:textColor="@color/contact_name_selector"/>
+        android:textColor="@color/contact_selector"/>
 </LinearLayout>
