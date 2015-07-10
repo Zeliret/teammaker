@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -31,7 +30,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class ContactsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, AbsListView.MultiChoiceModeListener {
+public class ContactsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, AbsListView.MultiChoiceModeListener {
     private ListView contactsList;
     private ContactsAdapter contactsAdapter;
     private ActionMode actionMode;
@@ -57,14 +56,12 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setupActionBar();
 
         getLoaderManager().initLoader(0, null, this);
     }
 
-    private void setupActionBar() {
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        ActionBar actionBar = activity.getSupportActionBar();
+    @Override
+    protected void setupActionBar(final ActionBar actionBar) {
         if (null != actionBar)
             actionBar.setTitle(R.string.title_contacts);
     }

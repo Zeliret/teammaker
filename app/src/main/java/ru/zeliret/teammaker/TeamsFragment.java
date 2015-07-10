@@ -2,16 +2,14 @@ package ru.zeliret.teammaker;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-public class TeamsFragment extends Fragment {
+public class TeamsFragment extends BaseFragment {
     public static final String KEY_PLAYERS = "players";
 
     public static TeamsFragment newInstance(final ArrayList<Player> players) {
@@ -36,13 +34,16 @@ public class TeamsFragment extends Fragment {
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setupActionBar();
     }
 
-    private void setupActionBar() {
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        ActionBar actionBar = activity.getSupportActionBar();
+    @Override
+    protected void setupActionBar(final ActionBar actionBar) {
         if (null != actionBar)
             actionBar.setTitle(R.string.title_teams);
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 }

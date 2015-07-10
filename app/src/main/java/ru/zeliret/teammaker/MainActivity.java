@@ -1,6 +1,7 @@
 package ru.zeliret.teammaker;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
     private FragmentManager fm;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,46 +19,39 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         setContentView(R.layout.activity_main);
         setupFm();
 
-        navigate(new ContactsFragment(), true);
+        setupRoot();
+    }
+
+    private void setupRoot() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                navigate(new ContactsFragment(), true);
+            }
+        }, 100);
     }
 
     private void setupFm() {
         fm = getSupportFragmentManager();
+        fm.addOnBackStackChangedListener(this);
         updateHomeButton();
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-        fm.addOnBackStackChangedListener(this);
+    protected void onDestroy() {
+        super.onDestroy();
+        fm.removeOnBackStackChangedListener(this);
     }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (processFragmentStack())
-                    return true;
+                onBackPressed();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private boolean processFragmentStack() {
-        if (fm.getBackStackEntryCount() > 0) {
-            fm.popBackStack();
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        fm.removeOnBackStackChangedListener(this);
     }
 
     public void navigate(final Fragment fragment) {
@@ -77,6 +72,18 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
     }
 
     @Override
+    public void onBackPressed() {
+        onBackPressed(false);
+    }
+
+    private void onBackPressed(final boolean force){
+        BaseFragment fragment = (BaseFragment) fm.findFragmentById(R.id.content);
+        if( force || null == fragment || fragment.onBackPressed() ){
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public void onBackStackChanged() {
         updateHomeButton();
 
@@ -93,5 +100,9 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         ActionBar actionBar = getSupportActionBar();
         if (null != actionBar)
             actionBar.setDisplayHomeAsUpEnabled(show);
+    }
+
+    public void goBack() {
+
     }
 }
