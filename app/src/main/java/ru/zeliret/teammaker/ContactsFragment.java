@@ -11,7 +11,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -115,9 +114,9 @@ public class ContactsFragment extends BaseFragment implements LoaderManager.Load
         ArrayList<Player> players = new ArrayList<>();
 
         SparseBooleanArray checkedItemPositions = contactsList.getCheckedItemPositions();
-        int itemsSize = checkedItemPositions.size();
-        for (int i = 0; i < itemsSize; i++) {
-            if (checkedItemPositions.get(i)) {
+        int size = contactsAdapter.getCount();
+        for (int i = 0; i < size; i++) {
+            if (checkedItemPositions.valueAt(i)) {
                 players.add(Player.fromCursor((Cursor) contactsList.getItemAtPosition(i)));
             }
         }
@@ -156,7 +155,7 @@ public class ContactsFragment extends BaseFragment implements LoaderManager.Load
         }
     }
 
-    private class ContactsAdapter extends CursorAdapter {
+    private static class ContactsAdapter extends CursorAdapter {
         public ContactsAdapter(final Context context) {
             super(context, null, 0);
         }
@@ -172,11 +171,11 @@ public class ContactsFragment extends BaseFragment implements LoaderManager.Load
         public void bindView(final View view, final Context context, final Cursor cursor) {
             Player player = Player.fromCursor(cursor);
             if (null != player) {
-                ContactsViewHolder holder = (ContactsViewHolder) view.getTag();
-                holder.nameView.setText(player.name);
-                Glide.with(getActivity())
+                ContactsViewHolder vh = (ContactsViewHolder) view.getTag();
+                vh.nameView.setText(player.name);
+                Glide.with(view.getContext())
                         .load(player.photoUri)
-                        .into(holder.photoView);
+                        .into(vh.photoView);
             }
         }
 
@@ -197,7 +196,7 @@ public class ContactsFragment extends BaseFragment implements LoaderManager.Load
         }
     }
 
-    private class ContactsViewHolder {
+    private static class ContactsViewHolder {
         private CircleImageView photoView;
         private TextView nameView;
 

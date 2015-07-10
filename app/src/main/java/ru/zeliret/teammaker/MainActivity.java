@@ -73,14 +73,7 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
 
     @Override
     public void onBackPressed() {
-        onBackPressed(false);
-    }
-
-    private void onBackPressed(final boolean force){
-        BaseFragment fragment = (BaseFragment) fm.findFragmentById(R.id.content);
-        if( force || null == fragment || fragment.onBackPressed() ){
-            super.onBackPressed();
-        }
+        goBack(false);
     }
 
     @Override
@@ -103,6 +96,13 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
     }
 
     public void goBack() {
+        goBack(true);
+    }
 
+    public void goBack(final boolean force) {
+        BaseFragment fragment = (BaseFragment) fm.findFragmentById(R.id.content);
+        if (force || null == fragment || fragment.onBackPressed()) {
+            super.onBackPressed();
+        }
     }
 }
