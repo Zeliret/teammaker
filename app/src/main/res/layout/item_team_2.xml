@@ -5,13 +5,13 @@
               android:orientation="horizontal">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/team_2_contact_photo"
+        android:id="@+id/contact_photo"
         android:layout_width="@dimen/contact_photo_size"
         android:layout_height="@dimen/contact_photo_size"
         android:background="@drawable/contact_photo_placeholder"/>
 
     <TextView
-        android:id="@+id/team_2_contact_name"
+        android:id="@+id/contact_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"

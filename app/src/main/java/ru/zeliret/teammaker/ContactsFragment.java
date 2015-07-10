@@ -11,7 +11,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBar;
-import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -100,7 +99,6 @@ public class ContactsFragment extends BaseFragment implements LoaderManager.Load
 
     @Override
     public boolean onActionItemClicked(final ActionMode mode, final MenuItem item) {
-        actionMode.finish();
         switch (item.getItemId()) {
             case R.id.menu_contacts_done:
                 completeChoice();
@@ -113,16 +111,13 @@ public class ContactsFragment extends BaseFragment implements LoaderManager.Load
     private void completeChoice() {
         ArrayList<Player> players = new ArrayList<>();
 
-        SparseBooleanArray checkedItemPositions = contactsList.getCheckedItemPositions();
-        int size = contactsAdapter.getCount();
-        for (int i = 0; i < size; i++) {
-            if (checkedItemPositions.valueAt(i)) {
+        int size = contactsList.getCount();
+        for (int i = 0; i < size; i++)
+            if (contactsList.isItemChecked(i))
                 players.add(Player.fromCursor((Cursor) contactsList.getItemAtPosition(i)));
-            }
-        }
 
-        MainActivity activity = (MainActivity) getActivity();
-        activity.navigate(TeamsFragment.newInstance(players));
+        actionMode.finish();
+        getHostActivity().navigate(TeamsFragment.newInstance(players));
     }
 
     @Override
