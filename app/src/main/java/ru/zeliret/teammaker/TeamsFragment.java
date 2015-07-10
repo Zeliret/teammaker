@@ -146,6 +146,11 @@ public class TeamsFragment extends BaseFragment {
         public int getViewTypeCount() {
             return RESOURCE_IDS.length;
         }
+
+        @Override
+        public boolean isEnabled(final int position) {
+            return false;
+        }
     }
 
     private static class TeamsViewHolder {
