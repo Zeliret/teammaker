@@ -20,7 +20,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AlphabetIndexer;
 import android.widget.ListView;
+import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -155,9 +157,22 @@ public class ContactsFragment extends BaseFragment implements LoaderManager.Load
         }
     }
 
-    private static class ContactsAdapter extends CursorAdapter {
+    private static class ContactsAdapter extends CursorAdapter implements SectionIndexer {
+        private static final String ALPHABET = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        private AlphabetIndexer indexer;
+
         public ContactsAdapter(final Context context) {
             super(context, null, 0);
+        }
+
+        @Override
+        public Cursor swapCursor(final Cursor newCursor) {
+            if (null == indexer)
+                indexer = new AlphabetIndexer(newCursor, newCursor.getColumnIndex(Contacts.DISPLAY_NAME_PRIMARY), ALPHABET);
+            else
+                indexer.setCursor(newCursor);
+
+            return super.swapCursor(newCursor);
         }
 
         @Override
@@ -193,6 +208,21 @@ public class ContactsFragment extends BaseFragment implements LoaderManager.Load
         @Override
         public boolean areAllItemsEnabled() {
             return true;
+        }
+
+        @Override
+        public Object[] getSections() {
+            return indexer.getSections();
+        }
+
+        @Override
+        public int getPositionForSection(final int sectionIndex) {
+            return indexer.getPositionForSection(sectionIndex);
+        }
+
+        @Override
+        public int getSectionForPosition(final int position) {
+            return indexer.getSectionForPosition(position);
         }
     }
 
