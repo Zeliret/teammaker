@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -24,7 +24,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TeamsFragment extends BaseFragment {
     public static final String KEY_PLAYERS = "players";
-    private GridView teamsGrid;
+    private ListView teamsList;
     private ArrayList<Player> players;
 
     public TeamsFragment() {
@@ -57,8 +57,8 @@ public class TeamsFragment extends BaseFragment {
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        teamsGrid = (GridView) view.findViewById(R.id.teams);
-        teamsGrid.setAdapter(new TeamsAdapter(view.getContext(), players));
+        teamsList = (ListView) view.findViewById(R.id.teams);
+        teamsList.setAdapter(new TeamsAdapter(view.getContext(), players));
     }
 
     @Override
@@ -121,7 +121,7 @@ public class TeamsFragment extends BaseFragment {
             View view = convertView;
             TeamsViewHolder vh;
             if (null == view) {
-                view = inflater.inflate(getItemViewType(position), parent, false);
+                view = inflater.inflate(RESOURCE_IDS[getItemViewType(position)], parent, false);
                 view.setTag(vh = new TeamsViewHolder(view));
             } else {
                 vh = (TeamsViewHolder) view.getTag();
@@ -130,7 +130,7 @@ public class TeamsFragment extends BaseFragment {
             Player player = getItem(position);
             vh.nameView.setText(player.name);
 
-            Glide.with(view.getContext())
+            Glide.with(getContext())
                     .load(player.photoUri)
                     .into(vh.photoView);
 
@@ -139,9 +139,7 @@ public class TeamsFragment extends BaseFragment {
 
         @Override
         public int getItemViewType(final int position) {
-            int index = position % 2;
-
-            return RESOURCE_IDS[index];
+            return position % 2;
         }
 
         @Override

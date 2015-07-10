@@ -4,12 +4,11 @@
                 android:layout_height="match_parent"
                 tools:context="ru.zeliret.teammaker.TeamsFragment">
 
-    <GridView
+    <ListView
         android:id="@+id/teams"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@android:color/transparent"
-        android:dividerHeight="1dp"
-        android:numColumns="2"/>
+        android:dividerHeight="1dp"/>
 
 </RelativeLayout>
