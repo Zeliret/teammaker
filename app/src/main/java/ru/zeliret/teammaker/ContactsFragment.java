@@ -11,9 +11,11 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.SearchView;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,15 +141,54 @@ public class ContactsFragment extends BaseFragment implements LoaderManager.Load
                 Contacts.DISPLAY_NAME_PRIMARY,
                 Contacts.PHOTO_THUMBNAIL_URI
         };
-        private static final String SELECTION = Contacts.DISPLAY_NAME_SOURCE + " = ?";
+        private static final String SELECTION = String.format("%s = ? and %s like ?", Contacts.DISPLAY_NAME_SOURCE, Contacts.DISPLAY_NAME);
         private static final String[] SELECTION_ARGS = new String[]{
-                String.valueOf(ContactsContract.DisplayNameSources.STRUCTURED_NAME)
+                String.valueOf(ContactsContract.DisplayNameSources.STRUCTURED_NAME),
+                "%"
         };
         private static final String ORDER = Contacts.DISPLAY_NAME_PRIMARY + " COLLATE LOCALIZED ASC";
 
         public ContactsLoader(final Context context) {
             super(context, Contacts.CONTENT_URI, PROJECTION, SELECTION, SELECTION_ARGS, ORDER);
         }
+
+        public void search(final String query) {
+            cancelLoad();
+
+            SELECTION_ARGS[1] = String.format("%s%%", query);
+            setSelectionArgs(SELECTION_ARGS);
+            forceLoad();
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_contacts, menu);
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        setupSearchView(searchView);
+    }
+
+
+    private void setupSearchView(final SearchView searchView) {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(final String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(final String newText) {
+                searchContacts(newText);
+
+                return true;
+            }
+        });
+    }
+
+    private void searchContacts(final String query) {
+        ContactsLoader loader = (ContactsLoader) getLoaderManager().<Cursor>getLoader(0);
+        loader.search(query);
     }
 
     private static class ContactsAdapter extends CursorAdapter {

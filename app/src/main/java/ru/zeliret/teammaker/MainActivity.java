@@ -7,14 +7,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
     private FragmentManager fm;
     private Handler handler = new Handler();
-    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,32 +35,6 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         fm = getSupportFragmentManager();
         fm.addOnBackStackChangedListener(this);
         updateHomeButton();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        setupSearchView((SearchView) menu.findItem(R.id.menu_search));
-
-        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-        setupSearchView(searchView);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    private void setupSearchView(final SearchView searchView) {
-        this.searchView = searchView;
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(final String query) {
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(final String newText) {
-                return true;
-            }
-        });
     }
 
     @Override
@@ -102,10 +73,7 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
 
     @Override
     public void onBackPressed() {
-        if (!searchView.isIconified())
-            searchView.setIconified(true);
-        else
-            goBack(false);
+        goBack(false);
     }
 
     @Override

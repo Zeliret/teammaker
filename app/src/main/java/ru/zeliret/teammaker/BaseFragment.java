@@ -20,6 +20,12 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setupActionBar(getHostActivity().getSupportActionBar());
